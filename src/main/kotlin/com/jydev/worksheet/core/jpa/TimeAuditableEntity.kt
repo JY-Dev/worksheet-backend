@@ -12,9 +12,7 @@ import java.time.Instant
 
 @MappedSuperclass
 @EntityListeners(value = [AuditingEntityListener::class])
-abstract class TimeAuditableEntity(
-
-) {
+abstract class TimeAuditableEntity {
     @CreatedDate
     @Column(name = "CT_UTC")
     @Convert(converter = InstantToUtcConverter::class)
