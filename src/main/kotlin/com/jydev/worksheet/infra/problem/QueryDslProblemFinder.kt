@@ -18,9 +18,20 @@ class QueryDslProblemFinder(
 
     override fun searchProblems(searchCriteria: SearchCriteria): List<ProblemModel> {
         val qProblem = QProblem.problem
-        return queryFactory.select(problemProjection(problem = qProblem))
+        return queryFactory.select(problemProjection(qProblem))
             .from(qProblem)
             .condition(problem = qProblem, searchCriteria = searchCriteria)
+            .orderBy(qProblem.id.desc())
+            .fetch()
+    }
+
+    override fun searchProblems(problemIds: List<Long>): List<ProblemModel> {
+        val qProblem = QProblem.problem
+
+        val matchIds = qProblem.id.`in`(problemIds)
+        return queryFactory.select(problemProjection(qProblem))
+            .from(qProblem)
+            .where(matchIds)
             .orderBy(qProblem.id.desc())
             .fetch()
     }

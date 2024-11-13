@@ -4,6 +4,7 @@ import com.jydev.worksheet.presentation.worksheet.model.request.AssignWorksheetR
 import com.jydev.worksheet.presentation.worksheet.model.request.CreateWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.response.AssignWorksheetResponse
 import com.jydev.worksheet.presentation.worksheet.model.response.CreateWorksheetResponse
+import com.jydev.worksheet.presentation.worksheet.model.response.GetWorksheetProblemsResponse
 import com.mindshare.api.core.web.ErrorResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -52,11 +53,10 @@ interface WorksheetApi {
                     학습지를 학생에게 출제 합니다."""
     )
     @ApiResponses(
-        ApiResponse(responseCode = "201", description = "정상"), ApiResponse(
-            responseCode = "400", description = """
-                            * 에러코드 
-                            
-                            """,
+        ApiResponse(responseCode = "201", description = "정상"),
+        ApiResponse(
+            responseCode = "403",
+            description = "권한 없음",
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         )
     )
@@ -74,5 +74,25 @@ interface WorksheetApi {
         studentIds: List<Long>,
 
         @RequestBody @Valid request: AssignWorksheetRequest
-    ) : AssignWorksheetResponse
+    ): AssignWorksheetResponse
+
+    @Operation(
+        summary = "학습지 문제 조회 API",
+        description = """
+                    학습지의 문제를 조회 합니다.
+                    """
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "201", description = "정상")
+    )
+    @GetMapping("/problems", produces = [APPLICATION_JSON_VALUE])
+    fun getWorksheetProblems(
+        @Schema(
+            description = """
+            학습지 Id
+            """,
+            requiredMode = Schema.RequiredMode.REQUIRED
+        )
+        @RequestParam(required = true, name = "pieceId") worksheetId: Long
+    ): GetWorksheetProblemsResponse
 }

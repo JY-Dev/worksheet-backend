@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "teacherId": 1,
-  "worksheetName": "테스트12",
-  "problemIds": [1003, 1001, 1002]
+  "worksheetName": "테스트",
+  "problemIds": [1003, 1001, 1002, 1038]
 }
 
 ### 학습지 출제
@@ -16,3 +16,7 @@ Content-Type: application/json
   "worksheetId" : 1,
   "teacherId": 1
 }
+
+### 학습지 문제 조회
+GET {{url}}/piece/problems?pieceId=1
+Content-Type: application/json
