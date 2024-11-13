@@ -1,0 +1,8 @@
+POST {{url}}/piece
+Content-Type: application/json
+
+{
+  "teacherId": 1,
+  "worksheetName": "테스트12",
+  "problemIds": [1003, 1001, 1002]
+}

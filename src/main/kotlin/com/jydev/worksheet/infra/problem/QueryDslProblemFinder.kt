@@ -25,6 +25,15 @@ class QueryDslProblemFinder(
             .fetch()
     }
 
+    override fun countExistingProblems(ids: List<Long>): Int {
+        val qProblem = QProblem.problem
+        val matchIds = qProblem.id.`in`(ids)
+        return queryFactory.select(qProblem.id.count())
+            .from(qProblem)
+            .where(matchIds)
+            .fetchOne()?.toInt() ?: 0
+    }
+
     private fun problemProjection(problem: QProblem): Expression<ProblemModel> {
         return Projections.constructor(
             ProblemModel::class.java,

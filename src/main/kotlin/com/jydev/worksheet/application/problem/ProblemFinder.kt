@@ -5,4 +5,5 @@ import com.jydev.worksheet.application.problem.model.SearchCriteria
 
 interface ProblemFinder {
     fun searchProblems(searchCriteria: SearchCriteria) : List<ProblemModel>
+    fun countExistingProblems(ids: List<Long>) : Int
 }
