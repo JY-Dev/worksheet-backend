@@ -1,3 +1,4 @@
+### 학습지 생성
 POST {{url}}/piece
 Content-Type: application/json
 
@@ -5,4 +6,13 @@ Content-Type: application/json
   "teacherId": 1,
   "worksheetName": "테스트12",
   "problemIds": [1003, 1001, 1002]
+}
+
+### 학습지 출제
+POST {{url}}/piece?studentIds=1,2,3,4,5,6
+Content-Type: application/json
+
+{
+  "worksheetId" : 1,
+  "teacherId": 1
 }
