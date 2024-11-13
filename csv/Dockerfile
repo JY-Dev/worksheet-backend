@@ -12,6 +12,8 @@ RUN pip install jaydebeapi
 RUN wget -O /h2.jar https://repo1.maven.org/maven2/com/h2database/h2/1.4.200/h2-1.4.200.jar
 
 COPY problem.csv .
+COPY student.csv .
+COPY teacher.csv .
 COPY insert_csv.py .
 
 CMD ["python", "insert_csv.py"]
