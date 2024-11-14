@@ -42,14 +42,36 @@ class AssignedWorksheet(
         get() = creationTime
 
     fun evaluate(evaluator: AnswerEvaluator, submittedAnswers: List<SubmittedAnswer>) {
-        val problemOrderMap = createProblemOrderMap()
+        validateSubmittedAnswers(submittedAnswers)
         val evaluationAnswers = evaluator.evaluate(submittedAnswers)
 
         this.submittedAnswers = submittedAnswers
         this.evaluationResult = WorksheetEvaluationResult.createResult(
-            problemOrderMap = problemOrderMap,
+            problemOrderMap = createProblemOrderMap(),
             evaluatedAnswers = evaluationAnswers
         )
+    }
+
+    private fun validateSubmittedAnswers(submittedAnswers : List<SubmittedAnswer>) {
+        val problemIds = worksheet.problemIds
+        val problemSize = problemIds.size
+
+        val matchAnswerSize = problemSize == submittedAnswers.size
+        if(matchAnswerSize.not()) {
+            throw IllegalArgumentException(
+                "Submitted answers size ${submittedAnswers.size} does not match the expected size in the worksheet."
+            )
+        }
+
+        worksheet.problemIds.forEachIndexed { idx, problemId ->
+            val matchProblem = submittedAnswers[idx].problemId == problemId
+            if(matchProblem.not()) {
+                throw IllegalArgumentException(
+                    "Problem ID : $problemId does not match in your submit answer"
+                )
+            }
+        }
+
     }
 
     private fun createProblemOrderMap(): Map<Long, Int> {
