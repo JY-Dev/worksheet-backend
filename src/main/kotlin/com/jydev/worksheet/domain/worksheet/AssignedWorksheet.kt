@@ -2,6 +2,7 @@ package com.jydev.worksheet.domain.worksheet
 
 import com.jydev.worksheet.core.jpa.TimeAuditableEntity
 import com.jydev.worksheet.core.jpa.converter.SubmittedAnswerListConverter
+import com.jydev.worksheet.core.util.toIndexMap
 import com.jydev.worksheet.domain.worksheet.evaluation.AnswerEvaluator
 import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswer
 import com.jydev.worksheet.domain.worksheet.user.Student
@@ -43,21 +44,21 @@ class AssignedWorksheet(
 
     fun evaluate(evaluator: AnswerEvaluator, submittedAnswers: List<SubmittedAnswer>) {
         validateSubmittedAnswers(submittedAnswers)
+
+        val problemIdIndexMap = worksheet.problemIds.toIndexMap()
         val evaluationAnswers = evaluator.evaluate(submittedAnswers)
+            .sortedBy { problemIdIndexMap[it.problemId] }
 
         this.submittedAnswers = submittedAnswers
-        this.evaluationResult = WorksheetEvaluationResult.createResult(
-            problemOrderMap = createProblemOrderMap(),
-            evaluatedAnswers = evaluationAnswers
-        )
+        this.evaluationResult = WorksheetEvaluationResult.createResult(evaluationAnswers)
     }
 
-    private fun validateSubmittedAnswers(submittedAnswers : List<SubmittedAnswer>) {
+    private fun validateSubmittedAnswers(submittedAnswers: List<SubmittedAnswer>) {
         val problemIds = worksheet.problemIds
         val problemSize = problemIds.size
 
         val matchAnswerSize = problemSize == submittedAnswers.size
-        if(matchAnswerSize.not()) {
+        if (matchAnswerSize.not()) {
             throw IllegalArgumentException(
                 "Submitted answers size ${submittedAnswers.size} does not match the expected size in the worksheet."
             )
@@ -65,19 +66,12 @@ class AssignedWorksheet(
 
         worksheet.problemIds.forEachIndexed { idx, problemId ->
             val matchProblem = submittedAnswers[idx].problemId == problemId
-            if(matchProblem.not()) {
+            if (matchProblem.not()) {
                 throw IllegalArgumentException(
                     "Problem ID : $problemId does not match in your submit answer"
                 )
             }
         }
-
-    }
-
-    private fun createProblemOrderMap(): Map<Long, Int> {
-        return worksheet.problemIds
-            .mapIndexed { idx, problemId -> problemId to idx }
-            .toMap()
     }
 
     fun isAlreadyEvaluated(): Boolean = evaluationResult.hasNoResult().not()

@@ -2,8 +2,10 @@ package com.jydev.worksheet.presentation.worksheet
 
 import com.jydev.worksheet.presentation.worksheet.model.request.AssignWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.CreateWorksheetRequest
+import com.jydev.worksheet.presentation.worksheet.model.request.EvaluateWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.response.AssignWorksheetResponse
 import com.jydev.worksheet.presentation.worksheet.model.response.CreateWorksheetResponse
+import com.jydev.worksheet.presentation.worksheet.model.response.EvaluateWorksheetResponse
 import com.jydev.worksheet.presentation.worksheet.model.response.GetWorksheetProblemsResponse
 import com.mindshare.api.core.web.ErrorResponse
 import io.swagger.v3.oas.annotations.Operation
@@ -60,6 +62,7 @@ interface WorksheetApi {
             content = [Content(schema = Schema(implementation = ErrorResponse::class))]
         )
     )
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = [APPLICATION_JSON_VALUE], params = ["studentIds"])
     fun assignWorksheet(
 
@@ -83,7 +86,7 @@ interface WorksheetApi {
                     """
     )
     @ApiResponses(
-        ApiResponse(responseCode = "201", description = "정상")
+        ApiResponse(responseCode = "200", description = "정상")
     )
     @GetMapping("/problems", produces = [APPLICATION_JSON_VALUE])
     fun getWorksheetProblems(
@@ -95,4 +98,31 @@ interface WorksheetApi {
         )
         @RequestParam(required = true, name = "pieceId") worksheetId: Long
     ): GetWorksheetProblemsResponse
+
+    @Operation(
+        summary = "학습지 채점 API",
+        description = """
+                    학습지의 문제를 채점 합니다.
+                    """
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "정상"),
+        ApiResponse(
+            responseCode = "400", description = """
+                            * 에러코드 
+                            - A01003 : 이미 채점된 학습지
+                            """
+        )
+    )
+    @PutMapping("/problems", produces = [APPLICATION_JSON_VALUE])
+    fun evaluateWorksheet(
+        @Schema(
+            description = """
+            학습지 Id
+            """,
+            requiredMode = Schema.RequiredMode.REQUIRED
+        )
+        @RequestParam(required = true, name = "pieceId") worksheetId: Long,
+        @RequestBody @Valid request : EvaluateWorksheetRequest
+    ): EvaluateWorksheetResponse
 }

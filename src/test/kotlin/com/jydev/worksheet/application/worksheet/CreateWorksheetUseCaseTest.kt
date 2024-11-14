@@ -7,6 +7,7 @@ import com.jydev.worksheet.domain.worksheet.WorksheetRepository
 import com.jydev.worksheet.domain.worksheet.user.Teacher
 import com.jydev.worksheet.domain.worksheet.user.TeacherRepository
 import com.jydev.worksheet.application.worksheet.error.DuplicateWorksheetNameException
+import com.jydev.worksheet.application.worksheet.error.InvalidProblemContainException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -30,7 +31,7 @@ class CreateWorksheetUseCaseTest {
         `when`(teacherRepository.findById(teacherId)).thenReturn(null)
 
         // when & then
-        assertThrows<IllegalArgumentException> {
+        assertThrows<NoSuchElementException> {
             createWorksheetUseCase(teacherId, listOf(1L, 2L, 3L), "New Worksheet")
         }
     }
@@ -62,7 +63,7 @@ class CreateWorksheetUseCaseTest {
         `when`(problemFinder.countExistingProblems(problemIds)).thenReturn(2) // 하나의 문제 ID가 유효하지 않음
 
         // when & then
-        assertThrows<IllegalArgumentException> {
+        assertThrows<InvalidProblemContainException> {
             createWorksheetUseCase(teacherId, problemIds, worksheetName)
         }
     }

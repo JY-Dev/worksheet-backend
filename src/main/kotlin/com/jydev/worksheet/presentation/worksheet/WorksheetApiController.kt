@@ -2,11 +2,15 @@ package com.jydev.worksheet.presentation.worksheet
 
 import com.jydev.worksheet.application.worksheet.AssignWorksheetUseCase
 import com.jydev.worksheet.application.worksheet.CreateWorksheetUseCase
+import com.jydev.worksheet.application.worksheet.EvaluateWorksheetUseCase
 import com.jydev.worksheet.application.worksheet.GetWorksheetProblemsUseCase
+import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswer
 import com.jydev.worksheet.presentation.worksheet.model.request.AssignWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.CreateWorksheetRequest
+import com.jydev.worksheet.presentation.worksheet.model.request.EvaluateWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.response.AssignWorksheetResponse
 import com.jydev.worksheet.presentation.worksheet.model.response.CreateWorksheetResponse
+import com.jydev.worksheet.presentation.worksheet.model.response.EvaluateWorksheetResponse
 import com.jydev.worksheet.presentation.worksheet.model.response.GetWorksheetProblemsResponse
 import org.springframework.web.bind.annotation.RestController
 
@@ -15,6 +19,7 @@ class WorksheetApiController(
     private val createWorksheetUseCase: CreateWorksheetUseCase,
     private val assignedWorksheetUseCase: AssignWorksheetUseCase,
     private val getWorksheetProblemsUseCase: GetWorksheetProblemsUseCase,
+    private val evaluateWorksheetUseCase: EvaluateWorksheetUseCase,
 ) : WorksheetApi {
 
     override fun createWorksheet(request: CreateWorksheetRequest): CreateWorksheetResponse {
@@ -53,6 +58,29 @@ class WorksheetApiController(
         }
 
         return GetWorksheetProblemsResponse(items)
+    }
+
+    override fun evaluateWorksheet(worksheetId: Long, request: EvaluateWorksheetRequest): EvaluateWorksheetResponse {
+
+        val submittedAnswers = request.submittedAnswers.map { answer ->
+            SubmittedAnswer(
+                problemId = answer.problemId,
+                answer = answer.submittedAnswer
+            )
+        }
+
+        val items = evaluateWorksheetUseCase(
+            studentId = request.studentId,
+            worksheetId = worksheetId,
+            answers = submittedAnswers
+        ).map { (problemId, collect) ->
+            EvaluateWorksheetResponse.EvaluateWorksheetItemResponse(
+                problemId = problemId,
+                collect = collect
+            )
+        }
+
+        return EvaluateWorksheetResponse(items)
     }
 
 }

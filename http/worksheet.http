@@ -4,8 +4,8 @@ Content-Type: application/json
 
 {
   "teacherId": 1,
-  "worksheetName": "테스트",
-  "problemIds": [1003, 1001, 1002, 1038]
+  "worksheetName": "테스트12",
+  "problemIds": [1003, 1001, 1002]
 }
 
 ### 학습지 출제
@@ -20,3 +20,25 @@ Content-Type: application/json
 ### 학습지 문제 조회
 GET {{url}}/piece/problems?pieceId=1
 Content-Type: application/json
+
+### 학습지 체점
+PUT {{url}}/piece/problems?pieceId=1
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "submittedAnswers": [
+    {
+      "problemId": 1003,
+      "submittedAnswer": "1"
+    },
+    {
+      "problemId": 1001,
+      "submittedAnswer": "1"
+    },
+    {
+      "problemId": 1002,
+      "submittedAnswer": "3"
+    }
+  ]
+}

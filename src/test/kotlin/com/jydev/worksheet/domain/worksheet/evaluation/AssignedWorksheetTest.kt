@@ -25,9 +25,9 @@ class AssignedWorksheetTest {
     // 평가된 답안 리스트를 모의 설정합니다.
     private val evaluatedAnswers = listOf(
         EvaluatedAnswer(1L, true, "1", "1"),
-        EvaluatedAnswer(2L, false, "2", "1"),
-        EvaluatedAnswer(3L, true, "1", "1"),
-        EvaluatedAnswer(4L, true, "1", "1")
+        EvaluatedAnswer(2L, true, "2", "2"),
+        EvaluatedAnswer(3L, false, "1", "3"),
+        EvaluatedAnswer(4L, false, "1", "4")
     )
 
     private val problemIds = listOf(1L, 2L, 3L, 4L)
@@ -44,7 +44,7 @@ class AssignedWorksheetTest {
         val evaluationResult = assignedWorksheet.evaluationResult
         assertNotNull(evaluationResult, "평가 결과가 설정되어 있어야 합니다.")
         assertEquals(assignedWorksheet.submittedAnswers, submittedAnswers, "제출한 답안이 올바르게 설정되야 합니다.")
-        assertEquals(3, evaluationResult.correctCount, "정답이 올바르게 계산되어야 합니다.")
+        assertEquals(2, evaluationResult.correctCount, "정답이 올바르게 계산되어야 합니다.")
     }
 
     @Test
@@ -97,5 +97,29 @@ class AssignedWorksheetTest {
         assertThrows<IllegalArgumentException> {
             assignedWorksheet.evaluate(answerEvaluator, invalidSubmittedAnswer)
         }
+    }
+
+    @Test
+    fun `평가의 결과가 올바른 순서대로 저장되는지 검증`() {
+
+        val evaluatedOutOfOrderAnswers = listOf(
+            EvaluatedAnswer(3L, false, "1", "1"),
+            EvaluatedAnswer(2L, true, "2", "2"),
+            EvaluatedAnswer(1L, true, "1", "1"),
+            EvaluatedAnswer(4L, false, "1", "1")
+        )
+
+        val orderEvaluation = listOf(true,true,false,false)
+
+        Mockito.`when`(worksheet.problemIds).thenReturn(problemIds)
+        Mockito.`when`(answerEvaluator.evaluate(submittedAnswers)).thenReturn(evaluatedOutOfOrderAnswers)
+
+        assignedWorksheet.evaluate(answerEvaluator, submittedAnswers)
+
+        // then: 평가 결과 순서를 검증합니다.
+        assignedWorksheet.evaluationResult.problemEvaluations.forEachIndexed { idx, evaluation ->
+            assertTrue(orderEvaluation[idx] == evaluation)
+        }
+
     }
 }
