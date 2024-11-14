@@ -1,6 +1,10 @@
 spring:
   application:
     name: worksheet-api
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -16,4 +20,8 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health"

@@ -81,7 +81,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any>? {
 
         val errorResponse = ErrorResponse(
-            ex.message ?: "Unknown error",
+            ex.message,
             ErrorCode.A05001,
         )
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)

@@ -1,0 +1,45 @@
+services:
+  worksheet-backend:
+    env_file:
+      - ./env/local.env
+    image: worksheet-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "9092:9092"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - worksheet-backend
+  csv-insert:
+    image: csv-insert:latest
+    build:
+      context: ./csv
+      dockerfile: Dockerfile
+    networks:
+      - worksheet-backend
+    depends_on:
+      worksheet-backend:
+        condition: service_healthy
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - worksheet-backend
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+networks:
+  worksheet-backend:
+    driver: bridge
