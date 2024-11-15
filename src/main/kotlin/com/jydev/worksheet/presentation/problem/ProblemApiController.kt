@@ -29,7 +29,7 @@ class ProblemApiController(
 
         val items = getProblemsUseCase(searchCriteria).map { problem ->
             GetProblemsResponse.GetProblemsItemResponse(
-                id = problem.problemId,
+                id = problem.id,
                 unitCode = problem.unitCode.value(),
                 level = problem.difficulty,
                 problemType = problem.problemType,

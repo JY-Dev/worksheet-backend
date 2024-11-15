@@ -5,15 +5,18 @@ import com.jydev.worksheet.application.problem.model.ProblemModel
 import com.jydev.worksheet.application.problem.model.SearchCriteria
 import com.jydev.worksheet.application.problem.model.SearchProblemType
 import com.jydev.worksheet.domain.problem.QProblem
+import com.jydev.worksheet.domain.problem.UnitCode
 import com.querydsl.core.types.Expression
 import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQuery
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 
 @Repository
 class QueryDslProblemFinder(
-    private val queryFactory : JPAQueryFactory
+    private val queryFactory : JPAQueryFactory,
+    private val cacheHandler: ProblemCacheHandler
 ) : ProblemFinder {
 
     override fun searchProblems(searchCriteria: SearchCriteria): List<ProblemModel> {
@@ -28,12 +31,17 @@ class QueryDslProblemFinder(
     override fun searchProblems(problemIds: List<Long>): List<ProblemModel> {
         val qProblem = QProblem.problem
 
-        val matchIds = qProblem.id.`in`(problemIds)
-        return queryFactory.select(problemProjection(qProblem))
-            .from(qProblem)
-            .where(matchIds)
-            .orderBy(qProblem.id.desc())
-            .fetch()
+        return cacheHandler.getProblemsFromCache(
+            problemIds = problemIds,
+            searchFromDatabase = { missingProblemIds ->
+                val matchIds = qProblem.id.`in`(missingProblemIds)
+                queryFactory.select(problemProjection(qProblem))
+                    .from(qProblem)
+                    .where(matchIds)
+                    .orderBy(qProblem.id.desc())
+                    .fetch()
+            }
+        )
     }
 
     override fun countExistingProblems(ids: List<Long>): Int {

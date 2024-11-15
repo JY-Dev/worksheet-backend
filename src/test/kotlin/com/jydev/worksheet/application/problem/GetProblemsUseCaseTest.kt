@@ -29,7 +29,7 @@ class GetProblemsUseCaseTest {
 
         val mockProblemsLevelLow = List(3) { index ->
             ProblemModel(
-                problemId = index.toLong(),
+                id = index.toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc123"),
                 difficulty = 1,
@@ -38,7 +38,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelMiddle = List(6) { index ->
             ProblemModel(
-                problemId = (index + 3).toLong(),
+                id = (index + 3).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc123"),
                 difficulty = 2,
@@ -47,7 +47,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelHigh = List(3) { index ->
             ProblemModel(
-                problemId = (index + 9).toLong(),
+                id = (index + 9).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc123"),
                 difficulty = 5,
@@ -80,7 +80,7 @@ class GetProblemsUseCaseTest {
 
         val mockProblemsLevelLow = List(2) { index ->
             ProblemModel(
-                problemId = index.toLong(),
+                id = index.toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc456"),
                 difficulty = 1,
@@ -89,7 +89,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelMiddle = List(3) { index ->
             ProblemModel(
-                problemId = (index + 2).toLong(),
+                id = (index + 2).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc456"),
                 difficulty = 2,
@@ -98,7 +98,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelHigh = List(5) { index ->
             ProblemModel(
-                problemId = (index + 5).toLong(),
+                id = (index + 5).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc456"),
                 difficulty = 5,
@@ -131,7 +131,7 @@ class GetProblemsUseCaseTest {
 
         val mockProblemsLevelLow = List(5) { index ->
             ProblemModel(
-                problemId = index.toLong(),
+                id = index.toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc789"),
                 difficulty = 1,
@@ -140,7 +140,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelMiddle = List(3) { index ->
             ProblemModel(
-                problemId = (index + 8).toLong(),
+                id = (index + 8).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc789"),
                 difficulty = 3,
@@ -149,7 +149,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelHigh = List(2) { index ->
             ProblemModel(
-                problemId = (index + 13).toLong(),
+                id = (index + 13).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc789"),
                 difficulty = 5,
@@ -185,7 +185,7 @@ class GetProblemsUseCaseTest {
         // 50% of 12 = 6, 30% of 12 = 3.6 반올림해서 4, 20% of 12 = 2.4 반올림해서 3 (총 10개로 정확히 떨어지지만 올림 연산 적용 시 더 많아질 수 있음)
         val mockProblemsLevelLow = List(6) { index -> // 올림 연산으로 5개가 아닌 6개 조회
             ProblemModel(
-                problemId = index.toLong(),
+                id = index.toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 1,
@@ -194,7 +194,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelMiddle = List(4) { index ->
             ProblemModel(
-                problemId = (index + 6).toLong(),
+                id = (index + 6).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 3,
@@ -203,7 +203,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelHigh = List(3) { index ->
             ProblemModel(
-                problemId = (index + 10).toLong(),
+                id = (index + 10).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 5,
@@ -236,7 +236,7 @@ class GetProblemsUseCaseTest {
 
         val mockProblemsLevelLow = List(4) { index ->
             ProblemModel(
-                problemId = index.toLong(),
+                id = index.toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 1,
@@ -245,7 +245,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelMiddle = List(1) { index ->
             ProblemModel(
-                problemId = (index + 6).toLong(),
+                id = (index + 6).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 3,
@@ -254,7 +254,7 @@ class GetProblemsUseCaseTest {
         }
         val mockProblemsLevelHigh = List(1) { index ->
             ProblemModel(
-                problemId = (index + 10).toLong(),
+                id = (index + 10).toLong(),
                 answer = "Answer$index",
                 unitCode = UnitCode("uc999"),
                 difficulty = 5,

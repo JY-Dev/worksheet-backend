@@ -15,14 +15,14 @@ class SimpleAnswerEvaluator(
         val evaluationProblemIds = answers.map { it.problemId }
         val evaluationProblemIdIndexMap = evaluationProblemIds.toIndexMap()
         val evaluationProblems = problemFinder.searchProblems(evaluationProblemIds)
-            .sortedBy { evaluationProblemIdIndexMap[it.problemId] }
+            .sortedBy { evaluationProblemIdIndexMap[it.id] }
 
         return evaluationProblems.mapIndexed { idx, problem ->
             val submitAnswer = answers[idx]
             val correctAnswer = submitAnswer.answer == problem.answer
 
             EvaluatedAnswer(
-                problemId = problem.problemId,
+                problemId = problem.id,
                 correct = correctAnswer,
                 submittedAnswer = submitAnswer.answer,
                 expectedAnswer = problem.answer

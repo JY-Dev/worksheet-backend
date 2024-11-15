@@ -28,14 +28,14 @@ class SimpleAnswerEvaluatorTest {
                 problemType = ProblemType.SELECTION,
                 difficulty = 1,
                 answer = "1",
-                problemId = 1
+                id = 1
             ),
             ProblemModel(
                 unitCode = UnitCode("uc1"),
                 problemType = ProblemType.SELECTION,
                 difficulty = 1,
                 answer = "2",
-                problemId = 2
+                id = 2
             ),
         )
         `when`(problemFinder.searchProblems(listOf(1, 2))).thenReturn(problems)
@@ -66,14 +66,14 @@ class SimpleAnswerEvaluatorTest {
                 problemType = ProblemType.SELECTION,
                 difficulty = 1,
                 answer = "1",
-                problemId = 1
+                id = 1
             ),
             ProblemModel(
                 unitCode = UnitCode("uc1"),
                 problemType = ProblemType.SELECTION,
                 difficulty = 1,
                 answer = "1",
-                problemId = 2
+                id = 2
             ),
         )
         `when`(problemFinder.searchProblems(listOf(2, 1))).thenReturn(problems)

@@ -20,10 +20,10 @@ class GetWorksheetProblemsUseCase(
             }
 
         val problems = problemFinder.searchProblems(problemIds = worksheet.problemIds)
-        return problems.sortedBy { problemIdOrderMap[it.problemId] }
+        return problems.sortedBy { problemIdOrderMap[it.id] }
             .map { problem ->
                 WorksheetProblemModel(
-                    problemId = problem.problemId,
+                    problemId = problem.id,
                     unitCode = problem.unitCode,
                     difficulty = problem.difficulty,
                     problemType = problem.problemType
