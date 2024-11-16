@@ -32,10 +32,10 @@ class WorksheetApiController(
         )
     }
 
-    override fun assignWorksheet(studentIds: List<Long>, request: AssignWorksheetRequest) : AssignWorksheetResponse {
+    override fun assignWorksheet(worksheetId: Long, studentIds: List<Long>, request: AssignWorksheetRequest) : AssignWorksheetResponse {
         val assignedStudentIds = assignedWorksheetUseCase(
             teacherId = request.teacherId,
-            worksheetId = request.worksheetId,
+            worksheetId = worksheetId,
             studentIds = studentIds
         )
 

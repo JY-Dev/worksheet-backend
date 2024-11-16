@@ -60,8 +60,16 @@ interface WorksheetApi {
         )
     )
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(produces = [APPLICATION_JSON_VALUE], params = ["studentIds"])
+    @PostMapping("/{pieceId}", produces = [APPLICATION_JSON_VALUE], params = ["studentIds"])
     fun assignWorksheet(
+
+        @Schema(
+            description = """
+            문제지 ID
+            """,
+            requiredMode = Schema.RequiredMode.REQUIRED
+        )
+        @PathVariable("pieceId") worksheetId: Long,
 
         @Schema(
             description = """

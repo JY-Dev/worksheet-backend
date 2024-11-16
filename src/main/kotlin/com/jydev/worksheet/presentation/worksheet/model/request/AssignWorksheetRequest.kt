@@ -6,14 +6,6 @@ data class AssignWorksheetRequest(
 
     @Schema(
         description = """
-        학습지 id
-        """,
-        requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    val worksheetId: Long,
-
-    @Schema(
-        description = """
         선생님 id
         """,
         requiredMode = Schema.RequiredMode.REQUIRED

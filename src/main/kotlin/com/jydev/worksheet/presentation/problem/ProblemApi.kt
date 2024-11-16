@@ -24,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam
 interface ProblemApi {
 
     @Operation(
-        summary = "이메일 회원 가입",
+        summary = "문제 검색 API",
         description = """
-                    이메일 회원 가입을 합니다."""
+                    문제를 검색 합니다."""
     )
     @ApiResponses(
         ApiResponse(responseCode = "201", description = "정상"), ApiResponse(
