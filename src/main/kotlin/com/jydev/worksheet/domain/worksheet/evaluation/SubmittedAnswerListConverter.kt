@@ -1,8 +1,7 @@
-package com.jydev.worksheet.core.jpa.converter
+package com.jydev.worksheet.domain.worksheet.evaluation
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswer
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 import org.springframework.stereotype.Component

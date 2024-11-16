@@ -3,10 +3,7 @@ package com.jydev.worksheet.presentation.worksheet
 import com.jydev.worksheet.presentation.worksheet.model.request.AssignWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.CreateWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.EvaluateWorksheetRequest
-import com.jydev.worksheet.presentation.worksheet.model.response.AssignWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.CreateWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.EvaluateWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.GetWorksheetProblemsResponse
+import com.jydev.worksheet.presentation.worksheet.model.response.*
 import com.mindshare.api.core.web.ErrorResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -125,4 +122,30 @@ interface WorksheetApi {
         @RequestParam(required = true, name = "pieceId") worksheetId: Long,
         @RequestBody @Valid request : EvaluateWorksheetRequest
     ): EvaluateWorksheetResponse
+
+    @Operation(
+        summary = "학습지 학습 통계 분석 API",
+        description = """
+                    학습지 학습 통계를 분석 합니다.
+                    """
+    )
+    @ApiResponses(
+        ApiResponse(responseCode = "200", description = "정상"),
+        ApiResponse(
+            responseCode = "400", description = """
+                            * 에러코드 
+                            - A01003 : 이미 채점된 학습지
+                            """
+        )
+    )
+    @GetMapping("/analyze", produces = [APPLICATION_JSON_VALUE])
+    fun analyzeWorksheet(
+        @Schema(
+            description = """
+            학습지 Id
+            """,
+            requiredMode = Schema.RequiredMode.REQUIRED
+        )
+        @RequestParam(required = true, name = "pieceId") worksheetId: Long
+    ) : AnalyzeWorksheetResponse
 }

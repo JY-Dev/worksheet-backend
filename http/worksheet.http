@@ -26,7 +26,7 @@ PUT {{url}}/piece/problems?pieceId=1
 Content-Type: application/json
 
 {
-  "studentId": 1,
+  "studentId": 3,
   "submittedAnswers": [
     {
       "problemId": 1003,
@@ -34,7 +34,7 @@ Content-Type: application/json
     },
     {
       "problemId": 1001,
-      "submittedAnswer": "1"
+      "submittedAnswer": "4"
     },
     {
       "problemId": 1002,
@@ -42,3 +42,7 @@ Content-Type: application/json
     }
   ]
 }
+
+### 학습지 학습 통계 분석
+GET {{url}}/piece/analyze?pieceId=1
+Content-Type: application/json

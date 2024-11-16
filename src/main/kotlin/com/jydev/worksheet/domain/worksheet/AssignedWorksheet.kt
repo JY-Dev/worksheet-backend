@@ -1,7 +1,7 @@
 package com.jydev.worksheet.domain.worksheet
 
 import com.jydev.worksheet.core.jpa.TimeAuditableEntity
-import com.jydev.worksheet.core.jpa.converter.SubmittedAnswerListConverter
+import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswerListConverter
 import com.jydev.worksheet.core.util.toIndexMap
 import com.jydev.worksheet.domain.worksheet.evaluation.AnswerEvaluator
 import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswer

@@ -1,17 +1,11 @@
 package com.jydev.worksheet.presentation.worksheet
 
-import com.jydev.worksheet.application.worksheet.AssignWorksheetUseCase
-import com.jydev.worksheet.application.worksheet.CreateWorksheetUseCase
-import com.jydev.worksheet.application.worksheet.EvaluateWorksheetUseCase
-import com.jydev.worksheet.application.worksheet.GetWorksheetProblemsUseCase
+import com.jydev.worksheet.application.worksheet.*
 import com.jydev.worksheet.domain.worksheet.evaluation.SubmittedAnswer
 import com.jydev.worksheet.presentation.worksheet.model.request.AssignWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.CreateWorksheetRequest
 import com.jydev.worksheet.presentation.worksheet.model.request.EvaluateWorksheetRequest
-import com.jydev.worksheet.presentation.worksheet.model.response.AssignWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.CreateWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.EvaluateWorksheetResponse
-import com.jydev.worksheet.presentation.worksheet.model.response.GetWorksheetProblemsResponse
+import com.jydev.worksheet.presentation.worksheet.model.response.*
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -20,6 +14,7 @@ class WorksheetApiController(
     private val assignedWorksheetUseCase: AssignWorksheetUseCase,
     private val getWorksheetProblemsUseCase: GetWorksheetProblemsUseCase,
     private val evaluateWorksheetUseCase: EvaluateWorksheetUseCase,
+    private val analyzeWorksheetUseCase: AnalyzeWorksheetUseCase
 ) : WorksheetApi {
 
     override fun createWorksheet(request: CreateWorksheetRequest): CreateWorksheetResponse {
@@ -81,6 +76,36 @@ class WorksheetApiController(
         }
 
         return EvaluateWorksheetResponse(items)
+    }
+
+    override fun analyzeWorksheet(worksheetId: Long): AnalyzeWorksheetResponse {
+        val analysisResult = analyzeWorksheetUseCase(worksheetId)
+
+        val studentTrainingResults = analysisResult.studentTrainingResults
+            .map { studentTrainingResult ->
+                AnalyzeWorksheetResponse.StudentTrainingResult(
+                    studentId = studentTrainingResult.studentId,
+                    studentName = studentTrainingResult.studentName,
+                    evaluated = studentTrainingResult.evaluated,
+                    correctWorksheetRate = studentTrainingResult.correctWorksheetRate,
+                )
+            }
+
+        val problemAnalysisResults = analysisResult.problemAnalysisResults
+            .map { problemAnalysisResult ->
+                AnalyzeWorksheetResponse.ProblemAnalysisResult(
+                    problemId = problemAnalysisResult.problemId,
+                    correctPerProblemRate = problemAnalysisResult.correctPerProblemRate,
+                )
+            }
+
+        return AnalyzeWorksheetResponse(
+            worksheetId = analysisResult.worksheetId,
+            worksheetName = analysisResult.worksheetName,
+            completedEvaluationCount = analysisResult.completedEvaluationCount,
+            studentTrainingResults = studentTrainingResults,
+            problemAnalysisResults = problemAnalysisResults
+        )
     }
 
 }
